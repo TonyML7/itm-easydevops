@@ -18,14 +18,12 @@ pipeline {
       }
     }
 
-    stage('Security Scan (Snyk)') {
+stage('Security Scan (Snyk)') {
   steps {
-    snykSecurity(
-      snykTokenId: 'snyk-token',
-      failOnIssues: true,
-      severity: 'high',
-      targetFile: 'frontend/EasyDevOps/EasyDevOps.csproj'
-    )
+    withCredentials([string(credentialsId: 'snyk-token', variable: 'SNYK_TOKEN')]) {
+      bat 'C:\\Tools\\snyk\\snyk.exe --version'
+      bat 'C:\\Tools\\snyk\\snyk.exe test --file=frontend\\EasyDevOps\\EasyDevOps.csproj --severity-threshold=high'
+    }
   }
 }
 
