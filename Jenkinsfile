@@ -23,7 +23,8 @@ stage('Security Scan (Snyk)') {
     withCredentials([string(credentialsId: 'snyk-token', variable: 'SNYK_TOKEN')]) {
       bat 'C:\\Tools\\snyk\\snyk.exe --version'
       bat 'cd frontend\\EasyDevOps && dotnet restore EasyDevOps.csproj'
-      bat 'cd frontend\\EasyDevOps && C:\\Tools\\snyk\\snyk.exe test --package-manager=nuget --file=EasyDevOps.csproj --severity-threshold=high'
+      bat 'cd frontend\\EasyDevOps && if not exist obj\\project.assets.json (echo project.assets.json missing & exit /b 1)'
+      bat 'cd frontend\\EasyDevOps && C:\\Tools\\snyk\\snyk.exe test --file=obj\\project.assets.json --severity-threshold=high'
     }
   }
 }
