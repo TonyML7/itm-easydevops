@@ -22,7 +22,8 @@ stage('Security Scan (Snyk)') {
   steps {
     withCredentials([string(credentialsId: 'snyk-token', variable: 'SNYK_TOKEN')]) {
       bat 'C:\\Tools\\snyk\\snyk.exe --version'
-      bat 'C:\\Tools\\snyk\\snyk.exe test --file=frontend\\EasyDevOps\\EasyDevOps.csproj --severity-threshold=high'
+      bat 'cd frontend\\EasyDevOps && dotnet restore EasyDevOps.csproj'
+      bat 'cd frontend\\EasyDevOps && C:\\Tools\\snyk\\snyk.exe test --package-manager=nuget --file=EasyDevOps.csproj --severity-threshold=high'
     }
   }
 }
