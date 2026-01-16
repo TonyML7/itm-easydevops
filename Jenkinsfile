@@ -18,6 +18,17 @@ pipeline {
       }
     }
 
+    stage('Security Scan (Snyk)') {
+  steps {
+    snykSecurity(
+      snykTokenId: 'snyk-token',
+      failOnIssues: true,
+      severity: 'high',
+      targetFile: 'frontend/EasyDevOps/EasyDevOps.csproj'
+    )
+  }
+}
+
     stage('Build') {
       steps {
         bat 'dotnet build frontend\\EasyDevOps\\EasyDevOps.csproj -c Release --no-restore'
